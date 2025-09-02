@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:5.0.27-ubi8
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/var/lib/mongodb/data
+    restart: always
+volumes:
+  mongodb_data:
