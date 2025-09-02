@@ -1,0 +1,123 @@
+/* Grid Notes Container */
+.grid-notes-container {
+  padding-top: 6rem;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Header */
+.grid-notes-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.grid-notes-header h1 {
+  color: #e7ecff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(92.43deg, #f1ff70 17.35%, #fff9aa 111.05%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Masonry Grid */
+.grid-notes-items {
+  columns: 3;
+  column-gap: 1.5rem;
+  column-fill: balance;
+  padding: 0;
+  orphans: 1;
+  widows: 1;
+}
+
+@media (max-width: 1024px) {
+  .grid-notes-items {
+    columns: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-notes-items {
+    columns: 1;
+  }
+}
+
+/* Grid Items */
+.grid-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  color: #e7ecff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 20px rgba(241, 255, 112, 0.1);
+  border-color: rgba(241, 255, 112, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.grid-item h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #e7ecff;
+}
+
+.grid-item span {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(231, 236, 255, 0.6);
+  font-weight: 400;
+  margin-top: 0.5rem;
+}
+
+/* Simulate different content heights */
+.grid-item:nth-child(3n + 1) {
+  min-height: 120px;
+}
+
+.grid-item:nth-child(3n + 2) {
+  min-height: 180px;
+}
+
+.grid-item:nth-child(3n + 3) {
+  min-height: 150px;
+}
+
+.grid-item:nth-child(5n + 1) {
+  min-height: 200px;
+}
+
+.grid-item:nth-child(7n + 1) {
+  min-height: 140px;
+}
+
+.recent {
+  color: #f1ff70;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
