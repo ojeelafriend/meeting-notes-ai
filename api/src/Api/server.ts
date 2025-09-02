@@ -1,7 +1,7 @@
 import { App } from "./http/express";
 import routes from "./routes/index.routes";
 
-import database from "../Contexts/Shared/framework/database";
+import database from "../Shared/framework/database";
 
 routes(App);
 
