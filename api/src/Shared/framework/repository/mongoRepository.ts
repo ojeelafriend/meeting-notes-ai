@@ -27,7 +27,9 @@ export const saveNote = async (
 
 export const getNotes = async () => {
   try {
-    const notes = await NoteModel.find().select("-_id -__v");
+    const notes = await NoteModel.find()
+      .select("-_id -__v")
+      .sort({ createdAt: -1 });
     return { notes, error: null };
   } catch (error) {
     return { notes: null, error: error };
