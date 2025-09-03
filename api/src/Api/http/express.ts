@@ -15,9 +15,17 @@ App.use(cors({ origin: "http://localhost:5174", credentials: true }));
 
 App.use(cookieParser());
 
-App.use(express.json(), express.urlencoded({ extended: false }));
+App.use(
+  express.json({ limit: "100mb" }),
+  express.raw({ limit: "100mb" }),
+  express.urlencoded({ limit: "100mb", extended: false })
+);
 
 App.use(express.static(`/public`));
+
+App.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ ok: true, message: "Smart Notes API is running" });
+});
 
 App.use((req: any, res: Response, next: NextFunction) => {
   if (req.url === "/login" || req.url === "/me") {

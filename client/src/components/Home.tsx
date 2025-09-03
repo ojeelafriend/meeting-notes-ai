@@ -8,6 +8,8 @@ import { FaLock } from "react-icons/fa";
 
 function App() {
   const navigate = useNavigate();
+  const MAX_SIZE_MB = 100;
+
   const fileInputRef: RefObject<HTMLInputElement | null> =
     useRef<HTMLInputElement | null>(null);
 
@@ -23,12 +25,23 @@ function App() {
       return;
     }
 
+    const sizeInMB = file.size / (1024 * 1024);
+    if (sizeInMB > MAX_SIZE_MB) {
+      alert(
+        `El archivo pesa ${sizeInMB.toFixed(
+          2
+        )} MB. El máximo permitido es ${MAX_SIZE_MB} MB.`
+      );
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
     setIsLoading(true);
     const { ok } = await summarizeMeeting(file);
     setIsLoading(false);
 
     if (ok) {
-      navigate("/notes");
+      navigate("/notes/");
     } else {
       setIsBlocked(true);
     }

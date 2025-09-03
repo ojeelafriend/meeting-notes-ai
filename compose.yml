@@ -1,0 +1,51 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:5.0.27-ubi8
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    ports:
+      - "27017:27017" # Lo dejé tal cual pediste
+    volumes:
+      - mongodb_data:/var/lib/mongodb/data
+    restart: always
+
+  api:
+    build: ./api # Usa el Dockerfile que te pasé
+    container_name: "smartnotes-api"
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    ports:
+      - "3080:3030" # Nginx del host proxyea /api -> 127.0.0.1:3030
+    environment:
+      # Puerto (seteo doble por compatibilidad con tu app)
+      PORT: "3030"
+      PORT_SERVER: "3030"
+
+      # Secrets/keys (cargalas desde .env del host)
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+
+      # ✅ Conexión a Mongo usando el nombre del servicio dentro de la red Docker
+      MONGODB_URI: "mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin"
+
+      # (Opcional) Si tu código aún lee variables separadas, las dejo coherentes:
+      MONGO_HOST: "mongodb"
+      MONGO_PORT: "27017"
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+
+    # (Opcional) Healthcheck sencillo
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3030/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  mongodb_data:
