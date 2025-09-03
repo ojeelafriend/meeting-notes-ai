@@ -1,5 +1,6 @@
 import { extractTitle } from "../../utils";
 import NoteModel from "./note";
+import UserModel from "./user";
 import { v4 as uuidv4 } from "uuid";
 
 export const saveNote = async (
@@ -33,5 +34,23 @@ export const getNotes = async () => {
     return { notes, error: null };
   } catch (error) {
     return { notes: null, error: error };
+  }
+};
+
+export const getNoteById = async (noteId: string) => {
+  try {
+    const note = await NoteModel.findOne({ noteId });
+    return { note, error: null };
+  } catch (error) {
+    return { note: null, error: error };
+  }
+};
+
+export const getUserByEmailAndPassword = async (email: string) => {
+  try {
+    const user = await UserModel.findOne({ email });
+    return { user, error: null };
+  } catch (error) {
+    return { user: null, error: error };
   }
 };
