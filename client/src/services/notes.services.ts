@@ -43,3 +43,16 @@ export const getNotes = async () => {
     })),
   };
 };
+
+export const getNote = async (id: string) => {
+  const response = await customFetch(`/notes/${id}`, {
+    method: "GET",
+  });
+  if (!response.ok) {
+    return { ok: false, note: null };
+  }
+  return {
+    ok: response.ok,
+    note: response.note as Note,
+  };
+};

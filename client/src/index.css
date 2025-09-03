@@ -134,15 +134,120 @@ h1 {
   padding: 0 2rem;
 }
 
-.header-title {
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: white;
+  border: 2px solid rgba(241, 255, 112, 0.3);
+  box-shadow: 0 0 10px rgba(241, 255, 112, 0.2);
+}
+
+.username {
   color: #e7ecff;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
   background: linear-gradient(92.43deg, #f1ff70 17.35%, #fff9aa 111.05%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+}
+
+.username:hover {
+  background: rgba(241, 255, 112, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(241, 255, 112, 0.2);
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  z-index: 1000;
+}
+
+.tooltip-content {
+  background: rgba(13, 18, 32, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  min-width: 180px;
+}
+
+.tooltip-content p {
+  color: #e7ecff;
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.tooltip-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.btn-confirm:hover {
+  background: linear-gradient(135deg, #ff5252, #ff4444);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #e7ecff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .profile-picture {
+    display: none;
+  }
+
+  .user-profile {
+    gap: 0;
+  }
 }
 
 .header-buttons {

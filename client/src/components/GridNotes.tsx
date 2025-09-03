@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../styles/gridnotes.css";
 import { useEffect } from "react";
 import { getNotes, type Note } from "../services/notes.services";
+import { useNavigate } from "react-router-dom";
 
 export default function GridNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -42,9 +43,10 @@ function Item({
   createdAt,
   recent,
 }: Note) {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="grid-item">
+      <div className="grid-item" onClick={() => navigate(`/notes/${noteId}`)}>
         <h2>{title}</h2>
         <span>
           {new Date(createdAt).toLocaleDateString("es-ES", {
