@@ -9,6 +9,7 @@ import "../styles/note.css";
 export default function Note() {
   const { id } = useParams();
   const [note, setNote] = useState<Note | null>(null);
+  const [showTranscript, setShowTranscript] = useState(false);
 
   useEffect(() => {
     getNote(id as string).then((response) => {
@@ -48,6 +49,22 @@ export default function Note() {
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {note.summary}
             </ReactMarkdown>
+          </div>
+
+          <div className="transcript-section">
+            <button
+              className="transcript-toggle"
+              onClick={() => setShowTranscript(!showTranscript)}
+            >
+              <span>Transcripción completa</span>
+              <span className={`arrow ${showTranscript ? "open" : ""}`}>▼</span>
+            </button>
+
+            {showTranscript && (
+              <div className="transcript-content">
+                <p>{note.transcription}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

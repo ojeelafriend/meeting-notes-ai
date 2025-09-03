@@ -19,7 +19,7 @@ App.use(express.json(), express.urlencoded({ extended: false }));
 
 App.use(express.static(`/public`));
 
-App.use((req: Request, res: Response, next: NextFunction) => {
+App.use((req: any, res: Response, next: NextFunction) => {
   if (req.url === "/login" || req.url === "/me") {
     next();
     return;
@@ -36,5 +36,14 @@ App.use((req: Request, res: Response, next: NextFunction) => {
   if (!decoded) {
     return res.status(401).json({ ok: false, message: "Unauthorized" });
   }
+
+  if (typeof decoded === "string") {
+    return res.status(401).json({ ok: false, message: "Unauthorized" });
+  }
+
+  req.user = {
+    userId: decoded.userId,
+    username: decoded.username,
+  };
   next();
 });

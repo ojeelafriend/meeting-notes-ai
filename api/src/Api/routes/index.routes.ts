@@ -12,6 +12,7 @@ import {
   saveNote,
   getNoteById,
   getUserByEmailAndPassword,
+  checkBlocked,
 } from "../../Shared/framework/repository/mongoRepository";
 import jwt from "jsonwebtoken";
 
@@ -20,6 +21,18 @@ const router = express.Router();
 const routes = (server: Express) => {
   server.use("", router);
 };
+
+router.get("/check-blocked", async (req: any, res: Response) => {
+  const { userId } = req.user;
+  const { blocked } = await checkBlocked(userId);
+  if (blocked) {
+    return res.status(403).json({
+      ok: false,
+      message: "You have reached the maximum number of requests",
+    });
+  }
+  return res.status(200).json({ ok: true, blocked });
+});
 
 router.post("/me", async (req: Request, res: Response) => {
   const { token } = req.cookies;
@@ -125,8 +138,18 @@ const upload = multer({ storage });
 router.post(
   "/summarize",
   upload.single("file"),
-  async (req: Request, res: Response) => {
+  async (req: any, res: Response) => {
     try {
+      const { userId } = req.user;
+      const { blocked } = await checkBlocked(userId);
+
+      if (blocked) {
+        return res.status(403).json({
+          ok: false,
+          message: "You have reached the maximum number of requests",
+        });
+      }
+
       const file = req.file;
 
       if (!file) {

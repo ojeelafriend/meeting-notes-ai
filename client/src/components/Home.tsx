@@ -1,14 +1,19 @@
 import { useRef, useState, type RefObject } from "react";
 import { BiCloudUpload } from "react-icons/bi";
 import folderIcon from "../assets/folder.png";
-
+import { useNavigate } from "react-router-dom";
 import { summarizeMeeting } from "../services/notes.services";
 import "../index.css";
+import { FaLock } from "react-icons/fa";
 
 function App() {
+  const navigate = useNavigate();
   const fileInputRef: RefObject<HTMLInputElement | null> =
     useRef<HTMLInputElement | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const handleSummarize = async () => {
     const file = fileInputRef.current?.files?.[0];
@@ -22,7 +27,11 @@ function App() {
     const { ok } = await summarizeMeeting(file);
     setIsLoading(false);
 
-    console.log(ok);
+    if (ok) {
+      navigate("/notes");
+    } else {
+      setIsBlocked(true);
+    }
   };
 
   return (
@@ -50,18 +59,28 @@ function App() {
                   ref={fileInputRef}
                   onChange={handleSummarize}
                 />
-                <BiCloudUpload size={30} color="gray" />
+                {isBlocked ? (
+                  <FaLock size={20} color="gray" />
+                ) : (
+                  <BiCloudUpload size={30} color="gray" />
+                )}
+
                 <p className="text-explained">
-                  Choose a file or drag and drop it here
+                  {isBlocked
+                    ? "Has alcanzado el límite de solicitudes"
+                    : "Choose a file or drag and drop it here"}
                 </p>
                 <p className="text-format-supported">
-                  MP4, MP3 formats supported, up to 100MB
+                  {isBlocked
+                    ? "Habla con el administrador para que desbloquees el servicio"
+                    : "MP4, MP3 formats supported, up to 100MB"}
                 </p>
                 <button
                   className="browse-file"
                   onClick={() => {
                     fileInputRef.current?.click();
                   }}
+                  disabled={isBlocked}
                 >
                   Browse File
                 </button>

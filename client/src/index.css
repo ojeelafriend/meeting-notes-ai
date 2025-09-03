@@ -111,6 +111,52 @@ h1 {
   color: #000;
 }
 
+/* Browse File Button Specific Styles */
+.browse-file {
+  background: linear-gradient(
+    92.43deg,
+    #f1ff70 17.35%,
+    #fff9aa 111.05%
+  ) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1.5rem !important;
+  color: #000 !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.9rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 1rem !important;
+}
+
+.browse-file:hover:not(:disabled) {
+  background: linear-gradient(
+    92.43deg,
+    #e8f560 17.35%,
+    #f0ec90 111.05%
+  ) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(241, 255, 112, 0.3) !important;
+}
+
+.browse-file:disabled {
+  background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+  cursor: not-allowed !important;
+  opacity: 0.9 !important;
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2) !important;
+  color: white !important;
+}
+
+.browse-file:disabled:hover {
+  background: linear-gradient(135deg, #ff5252, #ff4444) !important;
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3) !important;
+}
+
 /* Header Styles */
 .header {
   position: fixed;

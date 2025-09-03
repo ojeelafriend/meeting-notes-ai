@@ -1,5 +1,7 @@
-export const promptHelp = () => {
-  return `Eres un experto en resumir textos complejos. 
+export const promptHelp = (text: string) => {
+  return `
+  === INSTRUCCIONES ===
+  Eres un experto en resumir textos complejos. 
 Tu tarea es analizar el texto de entrada y organizar la información en categorías claras. 
 
 LO QUE NO DEBES HACER:
@@ -14,5 +16,10 @@ LO QUE DEBES HACER:
 - Resumir el texto de forma clara y concisa.
 - El titulo debe ser un nombre corto y descriptivo del texto.
 - Genera el resumen en formato markdown.
+=== FIN INSTRUCCIONES ===
+
+=== TEXTO DE ENTRADA ===
+${text}
+=== FIN TEXTO DE ENTRADA ===
 `;
 };

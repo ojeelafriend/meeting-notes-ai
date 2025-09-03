@@ -10,7 +10,6 @@ export const openai = new OpenAI({
 
 export const transcribe = async (file: Express.Multer.File) => {
   try {
-    console.log(file.path);
     const transcription = await openai.audio.transcriptions.create({
       file: fs.createReadStream(file.path),
       model: "whisper-1",
@@ -29,10 +28,7 @@ export const summarize = async (text: string) => {
   try {
     const summary = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: `${promptHelp()}` },
-        { role: "user", content: text },
-      ],
+      messages: [{ role: "user", content: `${promptHelp(text)}` }],
       response_format: { type: "text" },
     });
     return { summary: summary.choices[0].message.content, error: null };

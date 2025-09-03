@@ -8,9 +8,15 @@ export const summarizeMeeting = async (file: File) => {
     body: formData,
   });
 
+  if (!response.ok) {
+    return {
+      ok: false,
+      message: response.message,
+    };
+  }
   return {
     ok: response.ok,
-    message: `Summarize meeting ${response.ok ? "successfully" : "failed"}`,
+    message: `Summarize meeting successfully`,
   };
 };
 
