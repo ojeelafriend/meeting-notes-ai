@@ -35,14 +35,7 @@ export default function GridNotes() {
   );
 }
 
-function Item({
-  title,
-  noteId,
-  transcription,
-  summary,
-  createdAt,
-  recent,
-}: Note) {
+function Item({ title, noteId, summary, createdAt, recent }: Note) {
   const navigate = useNavigate();
   return (
     <>
