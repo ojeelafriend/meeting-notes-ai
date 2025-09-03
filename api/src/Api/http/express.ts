@@ -11,7 +11,7 @@ App.use(morgan("dev"));
 
 App.use(helmet());
 
-App.use(cors({ origin: "http://localhost:5174", credentials: true }));
+App.use(cors({ origin: `${process.env.CLIENT_URL}`, credentials: true }));
 
 App.use(cookieParser());
 
