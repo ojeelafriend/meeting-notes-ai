@@ -58,7 +58,7 @@ export const getUserByEmailAndPassword = async (email: string) => {
 export const checkBlocked = async (userId: string) => {
   try {
     const countNotes = await NoteModel.find().countDocuments();
-    return { blocked: countNotes >= 5, error: null };
+    return { blocked: countNotes >= 10, error: null };
   } catch (error) {
     return { blocked: true, error: error };
   }
