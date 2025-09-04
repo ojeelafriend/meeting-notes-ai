@@ -81,12 +81,12 @@ function App() {
                 <p className="text-explained">
                   {isBlocked
                     ? "Has alcanzado el límite de solicitudes"
-                    : "Choose a file or drag and drop it here"}
+                    : "Elija un video o audio que no exceda los 10 minutos de duración"}
                 </p>
                 <p className="text-format-supported">
                   {isBlocked
                     ? "Habla con el administrador para que desbloquees el servicio"
-                    : "MP4, MP3 formats supported, up to 100MB"}
+                    : "MP3, MP4, WAV, OPUS con 100MB de tamaño máximo"}
                 </p>
                 <button
                   className="browse-file"

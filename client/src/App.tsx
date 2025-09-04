@@ -100,7 +100,8 @@ const Header = () => {
               className="btn-secondary"
               onClick={() => navigate("/notes")}
             >
-              List summaries
+              <span className="btn-text-desktop">List summaries</span>
+              <span className="btn-text-mobile">Notes</span>
             </button>
           </div>
         </div>

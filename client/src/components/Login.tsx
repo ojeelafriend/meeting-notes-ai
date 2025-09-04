@@ -54,8 +54,10 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="professional-header">
-        <div className="brand">Neural Tools AI</div>
-        <div className="tagline">Plataforma para resumir reuniones</div>
+        <div className="brand">Smart Notes</div>
+        <div className="tagline">
+          Plataforma para resumir tus reuniones con IA
+        </div>
       </div>
 
       <div className="login-container">
@@ -114,10 +116,9 @@ export default function Login() {
 
       <div className="professional-footer">
         <div className="footer-text">
-          Desarrollado como demostración técnica para
+          Desarrollado como demostración técnica
         </div>
-        <div className="neural-team">Neural Team</div>
-        <br />
+
         <a
           href="https://www.linkedin.com/in/alejo-solis/"
           target="_blank"
