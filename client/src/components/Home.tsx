@@ -66,7 +66,7 @@ function App() {
               <div className="inner-glass">
                 <input
                   type="file"
-                  accept=".mp4, .mp3"
+                  accept=".mp3,.m4a,.wav,.webm,.mp4,.mpeg,.mpga,.ogg,.opus,.mov,.aac,.flac,.wma,.aif,.aiff,.caf,.amr,.mkv,.avi,.3gp,.ts"
                   size={100}
                   hidden
                   ref={fileInputRef}

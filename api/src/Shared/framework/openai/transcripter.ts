@@ -8,10 +8,10 @@ export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const transcribe = async (file: Express.Multer.File) => {
+export const transcribe = async (filePath: string) => {
   try {
     const transcription = await openai.audio.transcriptions.create({
-      file: fs.createReadStream(file.path),
+      file: fs.createReadStream(filePath),
       model: "whisper-1",
       prompt: "You are a helpful assistant that transcribes audio to text.",
       response_format: "text",

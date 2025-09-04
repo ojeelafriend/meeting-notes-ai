@@ -16,6 +16,9 @@ import {
 } from "../../Shared/framework/repository/mongoRepository";
 import jwt from "jsonwebtoken";
 
+import { upload } from "../../Shared/framework/files/multer.config";
+import { normalizeFile } from "../../Shared/framework/files/normalizer";
+
 const router = express.Router();
 
 const routes = (server: Express) => {
@@ -125,16 +128,6 @@ router.get("/notes/:noteId", async (req: Request, res: Response) => {
   return res.status(200).json({ ok: true, note });
 });
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + ext);
-  },
-});
-
-const upload = multer({ storage });
-
 router.post(
   "/summarize",
   upload.single("file"),
@@ -156,7 +149,11 @@ router.post(
         return res.status(400).json({ ok: false, error: "File is required" });
       }
 
-      const { transcription, error: errorTranscribe } = await transcribe(file);
+      const normalizedFile = await normalizeFile(file);
+
+      const { transcription, error: errorTranscribe } = await transcribe(
+        normalizedFile
+      );
 
       if (errorTranscribe || !transcription) {
         return res

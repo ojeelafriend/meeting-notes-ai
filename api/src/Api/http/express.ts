@@ -5,6 +5,9 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 export const App = express();
 
 App.use(morgan("dev"));
