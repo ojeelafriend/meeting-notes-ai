@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
+import { Note } from "../domain/Note";
+
+type NoteDocument = Note & mongoose.Document;
 
 const NoteModel = mongoose.model(
   "Note",
-  new mongoose.Schema(
+  new mongoose.Schema<NoteDocument>(
     {
       noteId: { type: String, required: true, unique: true },
       title: { type: String, required: true },

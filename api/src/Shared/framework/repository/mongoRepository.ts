@@ -1,5 +1,5 @@
 import { extractTitle } from "../../utils";
-import NoteModel from "./note";
+import NoteModel from "../../../Note/framework/note";
 import UserModel from "./user";
 import { v4 as uuidv4 } from "uuid";
 
