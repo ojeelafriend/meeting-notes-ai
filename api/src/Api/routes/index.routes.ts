@@ -18,6 +18,9 @@ import jwt from "jsonwebtoken";
 
 import { upload } from "../../Shared/framework/files/multer.config";
 import { normalizeFile } from "../../Shared/framework/files/normalizer";
+import { Creator } from "../../Note/application/Creator";
+import { Finder } from "../../Note/application/Finder";
+import { MongoRepository } from "../../Note/framework/MongoRepository";
 
 const router = express.Router();
 
@@ -104,28 +107,28 @@ router.post("/login", async (req: Request, res: Response) => {
   });
 });
 
-router.get("/notes", async (req: Request, res: Response) => {
-  const { notes, error: errorGetNotes } = await getNotes();
+const finder = new Finder(new MongoRepository());
 
-  if (errorGetNotes || !notes) {
-    return res
-      .status(500)
-      .json({ ok: false, error: errorGetNotes, tag: "error-get-notes" });
+router.get("/notes", async (req: Request, res: Response) => {
+  const { noteId } = req.query;
+
+  if (noteId) {
+    const { note, error } = await finder.execute(noteId as string);
+
+    if (error || !note) {
+      return res.status(500).json({ ok: false, error, tag: "error-get-note" });
+    }
+
+    return res.status(200).json({ ok: true, note });
+  }
+
+  const { notes, error } = await finder.execute();
+
+  if (error || !notes) {
+    return res.status(500).json({ ok: false, error, tag: "error-get-notes" });
   }
 
   return res.status(200).json({ ok: true, notes });
-});
-
-router.get("/notes/:noteId", async (req: Request, res: Response) => {
-  const { noteId } = req.params;
-  const { note, error: errorGetNote } = await getNoteById(noteId);
-  if (errorGetNote || !note) {
-    return res
-      .status(500)
-      .json({ ok: false, error: errorGetNote, tag: "error-get-note" });
-  }
-
-  return res.status(200).json({ ok: true, note });
 });
 
 router.post(
