@@ -4,6 +4,31 @@ import { useEffect } from "react";
 import { getNotes, type Note } from "../services/notes.services";
 import { useNavigate } from "react-router-dom";
 
+// Función para limpiar el texto markdown y remover símbolos
+const cleanMarkdownText = (text: string): string => {
+  return (
+    text
+      // Remover headers (# ## ### etc.)
+      .replace(/^#{1,6}\s+/gm, "")
+      // Remover bold (**text** o __text__)
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/__(.*?)__/g, "$1")
+      // Remover italic (*text* o _text_)
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/_(.*?)_/g, "$1")
+      // Remover links [text](url)
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      // Remover código inline `code`
+      .replace(/`([^`]+)`/g, "$1")
+      // Remover bloques de código
+      .replace(/```[\s\S]*?```/g, "")
+      // Limpiar espacios múltiples y saltos de línea
+      .replace(/\n\s*\n/g, "\n")
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+};
+
 export default function GridNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
 
@@ -40,7 +65,7 @@ function Item({ title, noteId, summary, createdAt, recent }: Note) {
   return (
     <>
       <div className="grid-item" onClick={() => navigate(`/notes/${noteId}`)}>
-        <h2>{title}</h2>
+        <h2>{cleanMarkdownText(title)}</h2>
         <span>
           {new Date(createdAt).toLocaleDateString("es-ES", {
             hour: "2-digit",
@@ -50,7 +75,7 @@ function Item({ title, noteId, summary, createdAt, recent }: Note) {
             year: "numeric",
           })}
         </span>
-        <p>{summary}</p>
+        {cleanMarkdownText(summary).slice(0, 600)}
         <p className="recent">{recent ? "Recent" : ""}</p>
       </div>
     </>

@@ -1,23 +1,44 @@
 import { customFetch } from "./http/customFetch";
 
-export const summarizeMeeting = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
-  const response = await customFetch("/summarize", {
-    method: "POST",
-    body: formData,
-  });
+export const transcribe = async (file?: File, originalPath?: string) => {
+  try {
+    if (!file) {
+      const result = await customFetch(`/transcribe/${originalPath}`, {
+        method: "GET",
+      });
 
-  if (!response.ok) {
+      if (!result.ok) {
+        return { transcription: "", error: result.error };
+      }
+
+      return { transcription: result.transcription, error: null };
+    }
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const result = await customFetch("/upload-file", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!result.ok || result.blocked) {
+      return { jobId: null, originalPath: null, error: result.message };
+    }
+
     return {
-      ok: false,
-      message: response.message,
+      jobId: result.jobId,
+      originalPath: result.originalPath,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      jobId: null,
+      originalPath: null,
+      error: error,
     };
   }
-  return {
-    ok: response.ok,
-    message: `Summarize meeting successfully`,
-  };
 };
 
 export type Note = {
@@ -33,7 +54,6 @@ export const getNotes = async () => {
   const response = await customFetch("/notes", {
     method: "GET",
   });
-  console.log(response);
   if (!response.ok) {
     return { ok: false, notes: [] };
   }

@@ -4,18 +4,19 @@ import UserModel from "./user";
 import { v4 as uuidv4 } from "uuid";
 
 export const saveNote = async (
-  transcription: string,
   summary: string,
-  title: string = extractTitle(summary)
+  originalPath: string,
+  jobId: string
 ) => {
   try {
-    console.log("title", title);
+    const title = extractTitle(summary);
 
     const note = new NoteModel({
       noteId: uuidv4(),
-      transcription,
-      summary,
+      summary: summary.replace(/\s*undefined$/, ""),
       title,
+      originalPath,
+      jobId,
     });
 
     await note.save();
@@ -37,9 +38,33 @@ export const getNotes = async () => {
   }
 };
 
+export const saveTranscription = async (
+  transcription: string,
+  noteId: string
+) => {
+  try {
+    const note = await NoteModel.findOneAndUpdate(
+      { noteId },
+      { transcription }
+    );
+    return { note, error: null };
+  } catch (error) {
+    return { note: null, error: error };
+  }
+};
+
 export const getNoteById = async (noteId: string) => {
   try {
     const note = await NoteModel.findOne({ noteId });
+    return { note, error: null };
+  } catch (error) {
+    return { note: null, error: error };
+  }
+};
+
+export const getNoteByJobId = async (jobId: string) => {
+  try {
+    const note = await NoteModel.findOne({ jobId });
     return { note, error: null };
   } catch (error) {
     return { note: null, error: error };

@@ -1,6 +1,10 @@
 export async function customFetch(
   endpoint: string,
-  options: { method: string; body?: any; headers?: HeadersInit }
+  options: {
+    method: string;
+    body?: any;
+    headers?: HeadersInit;
+  }
 ): Promise<any> {
   const { method, body, headers } = options;
 

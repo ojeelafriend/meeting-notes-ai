@@ -2,18 +2,23 @@ import { useRef, useState, type RefObject } from "react";
 import { BiCloudUpload } from "react-icons/bi";
 import folderIcon from "../assets/folder.png";
 import { useNavigate } from "react-router-dom";
-import { summarizeMeeting } from "../services/notes.services";
+import { transcribe } from "../services/notes.services";
 import "../index.css";
 import { FaLock } from "react-icons/fa";
+import { useLiveStore } from "../stores/liveStore";
 
 function App() {
   const navigate = useNavigate();
+  const { setOriginalPath, setEventSourceRef, clearAll } = useLiveStore();
+
   const MAX_SIZE_MB = 100;
 
   const fileInputRef: RefObject<HTMLInputElement | null> =
     useRef<HTMLInputElement | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const eventSourceRef = useRef<EventSource | null>(null);
+
+  const [isLoading, setIsLoading] = useState<boolean | "summarizing">(false);
 
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -21,11 +26,11 @@ function App() {
     const file = fileInputRef.current?.files?.[0];
 
     if (!file) {
-      console.log("No file selected");
       return;
     }
 
     const sizeInMB = file.size / (1024 * 1024);
+
     if (sizeInMB > MAX_SIZE_MB) {
       alert(
         `El archivo pesa ${sizeInMB.toFixed(
@@ -37,14 +42,31 @@ function App() {
     }
 
     setIsLoading(true);
-    const { ok } = await summarizeMeeting(file);
+    setIsBlocked(false);
+    clearAll();
+
+    const { jobId, originalPath, error } = await transcribe(file);
+
+    if (error) {
+      setIsBlocked(true);
+      return;
+    }
+
+    eventSourceRef.current = new EventSource(
+      `${
+        import.meta.env.VITE_API_URL
+      }/stream-summarize?jobId=${jobId}&originalPath=${originalPath}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    setEventSourceRef(eventSourceRef as RefObject<EventSource> | null);
+    setOriginalPath(originalPath);
+
     setIsLoading(false);
 
-    if (ok) {
-      navigate("/notes/");
-    } else {
-      setIsBlocked(true);
-    }
+    await navigate(`/notes/${jobId}?partial=true`);
   };
 
   return (
@@ -55,8 +77,10 @@ function App() {
           {isLoading ? (
             <div className="loader-container">
               <div className="spinner"></div>
-              <h1>Procesando tu reunión...</h1>
-              <p>Estamos analizando y resumiendo el contenido</p>
+              <div className="loader-container">
+                <h1>Procesando tu reunión...</h1>
+                <p>Estamos analizando y resumiendo el contenido</p>
+              </div>
             </div>
           ) : (
             <>
@@ -80,7 +104,7 @@ function App() {
 
                 <p className="text-explained">
                   {isBlocked
-                    ? "Has alcanzado el límite de solicitudes"
+                    ? "Por alguna razón este servicio no está disponible"
                     : "Elija un video o audio que no exceda los 10 minutos de duración"}
                 </p>
                 <p className="text-format-supported">

@@ -286,3 +286,54 @@
     transform: translateY(0);
   }
 }
+
+/* Note Skeleton Styles - Estilo Discord minimalista */
+.note-skeleton {
+  padding: 0.5rem 0;
+}
+
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  margin: 0.75rem 0;
+  height: 1.2rem;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 1.8rem;
+  margin: 1rem 0 1.5rem 0;
+  border-radius: 6px;
+}
+
+.skeleton-paragraph {
+  width: 100%;
+}
+
+.skeleton-short {
+  width: 75%;
+}
+
+.skeleton-medium {
+  width: 85%;
+}
+
+.skeleton-line:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

@@ -35,6 +35,8 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.6",
     "bcrypt": "^6.0.0",
